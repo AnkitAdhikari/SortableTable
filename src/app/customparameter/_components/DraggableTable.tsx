@@ -9,7 +9,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { HolderOutlined } from "@ant-design/icons";
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -35,7 +35,7 @@ const DragHandle: React.FC = () => {
 };
 
 interface DataType {
-  key: string;
+  id: string;
   name: string;
   age: number;
   address: string;
@@ -46,12 +46,6 @@ const columns: TableColumnsType<DataType> = [
   { title: "Name", dataIndex: "name" },
   { title: "Age", dataIndex: "age" },
   { title: "Address", dataIndex: "address" },
-];
-
-const initialData: DataType[] = [
-  { key: "1", name: "John Brown", age: 32, address: "Long text Long" },
-  { key: "2", name: "Jim Green", age: 42, address: "London No. 1 Lake Park" },
-  { key: "3", name: "Joe Black", age: 32, address: "Sidney No. 1 Lake Park" },
 ];
 
 interface RowProps extends React.HTMLAttributes<HTMLTableRowElement> {
@@ -88,21 +82,26 @@ const Row: React.FC<RowProps> = (props) => {
   );
 };
 
-function DraggableTable() {
-  const [dataSource, setDataSource] = useState<DataType[]>(initialData);
+function DraggableTable({ userUrl }: { userUrl: string }) {
+  const [dataSource, setDataSource] = useState<DataType[]>([]);
   const onDragEnd = ({ active, over }: DragEndEvent) => {
     if (active.id !== over?.id) {
       setDataSource((prevState) => {
         const activeIndex = prevState.findIndex(
-          (record) => record.key === active?.id,
+          (record) => record.id === active?.id,
         );
         const overIndex = prevState.findIndex(
-          (record) => record.key === over?.id,
+          (record) => record.id === over?.id,
         );
         return arrayMove(prevState, activeIndex, overIndex);
       });
     }
   };
+  useEffect(() => {
+    fetch(userUrl)
+      .then((res) => res.json())
+      .then((data) => setDataSource(data.data));
+  }, [userUrl]);
   return (
     <DndContext
       id="customparameter"
@@ -110,11 +109,11 @@ function DraggableTable() {
       onDragEnd={onDragEnd}
     >
       <SortableContext
-        items={dataSource.map((i) => i.key)}
+        items={dataSource.map((i) => i.id)}
         strategy={verticalListSortingStrategy}
       >
         <Table<DataType>
-          rowKey="key"
+          rowKey="id"
           components={{ body: { row: Row } }}
           columns={columns}
           dataSource={dataSource}
