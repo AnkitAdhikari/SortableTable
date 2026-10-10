@@ -17,6 +17,12 @@ const users: Prisma.UserCreateManyInput[] = [
 
 async function main() {
   await prisma.user.createMany({ data: users, skipDuplicates: true });
+  await prisma.$queryRaw`
+  SELECT setval(
+    pg_get_serial_sequence('"User"', 'id'),
+    (SELECT MAX(id) FROM "User")
+  )
+`;
 }
 
 main()

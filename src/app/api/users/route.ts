@@ -1,11 +1,3 @@
-import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+export { GET, POST } from "@/modules/users/server/http";
 
-export async function GET() {
-  const users = await prisma.user.findMany();
-  return NextResponse.json({
-    data: users,
-    message: "Users fetched successfully",
-    status: true,
-  });
-}
+export const runtime = "nodejs";
