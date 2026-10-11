@@ -14,7 +14,7 @@ export function UserDetailDrawer({ userId, onClose }: UserDetailDrawerProps) {
   const { data: user, isPending, isError, error } = useUserQuery(userId);
 
   return (
-    <DrawerForm open={open} title="User details" onClose={onClose} width={480}>
+    <DrawerForm open={open} title="User details" onClose={onClose} size="large">
       {isPending ? (
         <div className="flex justify-center py-12">
           <Spin />

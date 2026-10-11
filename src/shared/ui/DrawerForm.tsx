@@ -10,7 +10,7 @@ type DrawerFormProps = {
   onSubmit?: () => void;
   submitLabel?: string;
   submitting?: boolean;
-  width?: number;
+  size?: "large" | "middle" | "small";
   children: ReactNode;
   footerExtra?: ReactNode;
 };
@@ -22,7 +22,7 @@ export function DrawerForm({
   onSubmit,
   submitLabel = "Save",
   submitting = false,
-  width = 480,
+  size = "large",
   children,
   footerExtra,
 }: DrawerFormProps) {
@@ -31,7 +31,7 @@ export function DrawerForm({
       title={title}
       open={open}
       onClose={onClose}
-      width={width}
+      size={size}
       destroyOnHidden
       footer={
         <div className="flex justify-end">
