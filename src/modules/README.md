@@ -22,13 +22,13 @@ modules/<domain>/
 
 ## Import boundaries
 
-| From         | May import                                                  |
-| ------------ | ----------------------------------------------------------- |
-| `ui/`        | `client/*`, `model/*`, `@/shared/*`                         |
-| `client/`    | `model/*`, `@/shared/http`, `@tanstack/react-query`, `nuqs` |
-| `server/`    | `model/*`, `@/lib/prisma`, `@/shared/http/envelope`         |
-| `app/` pages | `@/modules/<domain>` public barrel                          |
-| `app/api`    | `@/modules/<domain>/server/http`                            |
+| From         | May import                                                                      |
+| ------------ | ------------------------------------------------------------------------------- |
+| `ui/`        | `client/*`, `model/*`, `@/shared/*`                                             |
+| `client/`    | `model/*`, `@/shared/http`, `@tanstack/react-query`, `nuqs`                     |
+| `server/`    | `model/*`, `@/lib/prisma`, `@/shared/http/envelope`, `@/shared/http/parse-json` |
+| `app/` pages | `@/modules/<domain>` public barrel                                              |
+| `app/api`    | `@/modules/<domain>/server/http`                                                |
 
 **Do not:** import Prisma from `ui/` or `client/`; `fetch` from UI; put business logic in `app/`.
 

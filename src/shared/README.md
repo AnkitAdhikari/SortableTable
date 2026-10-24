@@ -8,6 +8,7 @@ Cross-cutting building blocks used by all modules.
 | ----------------------------- | ------------------------------------------------------------------------------------------------- |
 | `http/client.ts`              | `apiClient` — envelope unwrap, auth headers stub                                                  |
 | `http/envelope.ts`            | `jsonOk` / `jsonError`                                                                            |
+| `http/parse-json.ts`          | `parseJson` — read a JSON body and validate it with a Zod schema                                  |
 | `http/errors.ts`              | `ApiError`                                                                                        |
 | `http/orval-mutator.ts`       | Orval fetch mutator → `apiClient`                                                                 |
 | `query/`                      | QueryClient defaults, provider, `notifyApiError` / `notifySuccess`                                |

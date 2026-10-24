@@ -1,4 +1,5 @@
 import { jsonError, jsonOk } from "@/shared/http/envelope";
+import { parseJson } from "@/shared/http/parse-json";
 import {
   createUserSchema,
   listUsersQuerySchema,
@@ -30,19 +31,12 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const body: unknown = await request.json().catch(() => null);
-  const parsed = createUserSchema.safeParse(body);
+  const parsed = await parseJson(request, createUserSchema, {
+    code: "USERS_VALIDATION_FAILED",
+    message: "Invalid user",
+  });
 
-  if (!parsed.success) {
-    return jsonError(
-      {
-        code: "USERS_VALIDATION_FAILED",
-        message: "Invalid user",
-        details: parsed.error.flatten(),
-      },
-      400,
-    );
-  }
+  if (!parsed.ok) return parsed.response;
 
   const user = await usersService.createUser(parsed.data);
   return jsonOk(user, { status: 201 });
